@@ -28,6 +28,6 @@ namespace AndrewCSharpCodingTest.Models
         public Double Amount { get; set; }
 
         public string SecurityCode { get; set; }
-
+        
     }
 }

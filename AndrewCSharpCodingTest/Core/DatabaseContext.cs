@@ -15,5 +15,6 @@ namespace AndrewCSharpCodingTest.Core
         }
 
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<PaymentState> PaymentState { get; set; }
     }
 }

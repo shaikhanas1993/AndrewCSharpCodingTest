@@ -47,6 +47,35 @@ namespace AndrewCSharpCodingTest.Migrations
 
                     b.ToTable("Payments");
                 });
+
+            modelBuilder.Entity("AndrewCSharpCodingTest.Models.PaymentState", b =>
+                {
+                    b.Property<long>("PaymentStateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<long?>("PaymentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("paymentStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentStateId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("PaymentState");
+                });
+
+            modelBuilder.Entity("AndrewCSharpCodingTest.Models.PaymentState", b =>
+                {
+                    b.HasOne("AndrewCSharpCodingTest.Models.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
+
+                    b.Navigation("Payment");
+                });
 #pragma warning restore 612, 618
         }
     }

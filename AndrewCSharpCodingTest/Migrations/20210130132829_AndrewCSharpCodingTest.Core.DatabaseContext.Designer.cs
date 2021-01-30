@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AndrewCSharpCodingTest.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210130105657_AndrewCSharpCodingTest.Core.DatabaseContext")]
+    [Migration("20210130132829_AndrewCSharpCodingTest.Core.DatabaseContext")]
     partial class AndrewCSharpCodingTestCoreDatabaseContext
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,35 @@ namespace AndrewCSharpCodingTest.Migrations
                     b.HasKey("PaymentId");
 
                     b.ToTable("Payments");
+                });
+
+            modelBuilder.Entity("AndrewCSharpCodingTest.Models.PaymentState", b =>
+                {
+                    b.Property<long>("PaymentStateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .UseIdentityColumn();
+
+                    b.Property<long?>("PaymentId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("paymentStatus")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentStateId");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("PaymentState");
+                });
+
+            modelBuilder.Entity("AndrewCSharpCodingTest.Models.PaymentState", b =>
+                {
+                    b.HasOne("AndrewCSharpCodingTest.Models.Payment", "Payment")
+                        .WithMany()
+                        .HasForeignKey("PaymentId");
+
+                    b.Navigation("Payment");
                 });
 #pragma warning restore 612, 618
         }
