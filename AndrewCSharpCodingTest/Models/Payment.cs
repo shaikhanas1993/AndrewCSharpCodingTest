@@ -1,13 +1,15 @@
 ﻿using AndrewCSharpCodingTest.CustomValidators;
 using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AndrewCSharpCodingTest.Models
 {
     public class Payment
     {
-        public Guid PaymentId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long PaymentId { get; set; }
 
         [Required]
         [CreditCardNumberValidator]
