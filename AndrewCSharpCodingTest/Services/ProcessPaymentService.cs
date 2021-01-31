@@ -12,11 +12,13 @@ namespace AndrewCSharpCodingTest.Services
     public class ProcessPaymentService : IProccessPaymentService
     {
         private readonly ICheapGatewayService _cheapGatewayServie;
+        private readonly IExpensiveGatewayService _expensiveGatewayService;
         private readonly IPaymentRepository _paymentRepository;
-        public ProcessPaymentService(ICheapGatewayService cheapGatewayService, IPaymentRepository paymentRepository)
+        public ProcessPaymentService(ICheapGatewayService cheapGatewayService, IPaymentRepository paymentRepository, IExpensiveGatewayService expensiveGatewayService)
         {
             _cheapGatewayServie = cheapGatewayService;
             _paymentRepository = paymentRepository;
+            _expensiveGatewayService = expensiveGatewayService;
         }
 
         public Task<FakeGatewayResponse> processPayment(Payment payment)
@@ -39,9 +41,27 @@ namespace AndrewCSharpCodingTest.Services
             }
         }
 
-        private Task<FakeGatewayResponse> usePremiumPaymentGatewayProvider(Payment payment)
+        private async Task<FakeGatewayResponse> usePremiumPaymentGatewayProvider(Payment payment)
         {
-            throw new NotImplementedException();
+            //Retry three times to see if  we get a success
+           int counter = 3;
+           FakeGatewayResponse fakeGatewayResponse = null;
+           while(counter > 0)
+           {
+                fakeGatewayResponse = Task.Run(() => _expensiveGatewayService.processPayment(payment)).Result;
+                if(fakeGatewayResponse.status == true)
+                {
+                    break;
+                }
+                counter = counter - 1;   
+           }
+
+           if(fakeGatewayResponse == null)
+           {
+                throw new Exception("Something Went Wrong in usePremiumPaymentGatewayProvider");
+           }
+            await _paymentRepository.AddPayment(payment, fakeGatewayResponse.status);
+            return fakeGatewayResponse;
         }
 
         private async Task<FakeGatewayResponse> useCheapGatewayPaymentProvider(Payment payment)

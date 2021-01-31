@@ -46,6 +46,7 @@ namespace AndrewCSharpCodingTest
                     });
             services.AddSingleton<IProccessPaymentService, ProcessPaymentService>();
             services.AddSingleton<ICheapGatewayService, CheapGatewayService>();
+            services.AddSingleton<IExpensiveGatewayService, ExpensivePaymentGateway>();
             services.AddSingleton<IPaymentRepository, PaymentRepository>();
             services.AddSwaggerGen(c =>
             {
