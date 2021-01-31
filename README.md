@@ -8,7 +8,7 @@ update-database
 
 Sample request:
 {
-  "paymentId": 0,
+  
   "creditCardName": "4953089013607",
   "cardHolder": "A Z",
   "expirationDate": "2021-03-21",
