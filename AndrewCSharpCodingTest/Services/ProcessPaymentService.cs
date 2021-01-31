@@ -29,7 +29,7 @@ namespace AndrewCSharpCodingTest.Services
                 return useCheapGatewayPaymentProvider(payment);
             }else if(payment.Amount > 20 && payment.Amount <= 500)
             {
-                throw new Exception("Something Wrong with the payment amount.");
+                return tryWithPreimiumThenWithCheap(payment);
             }
             else if (payment.Amount >  500)
             {
@@ -62,6 +62,24 @@ namespace AndrewCSharpCodingTest.Services
            }
             await _paymentRepository.AddPayment(payment, fakeGatewayResponse.status);
             return fakeGatewayResponse;
+        }
+
+        private async Task<FakeGatewayResponse> tryWithPreimiumThenWithCheap(Payment payment)
+        {
+            //try first with premium gatway service
+            var response = await _expensiveGatewayService.processPayment(payment);
+            if(response.status == true)
+            {
+                await _paymentRepository.AddPayment(payment, response.status);
+                return response;
+            }
+            else
+            {
+                //try out with cheap
+                response  = await _cheapGatewayServie.hitEternalApiGateywayService();
+                await _paymentRepository.AddPayment(payment, response.status);
+                return response;
+            }
         }
 
         private async Task<FakeGatewayResponse> useCheapGatewayPaymentProvider(Payment payment)
