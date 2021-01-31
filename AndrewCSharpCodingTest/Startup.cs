@@ -44,10 +44,10 @@ namespace AndrewCSharpCodingTest
                            return ResponseHelper.Response(HelperVariables.BAD_REQUEST, HelperVariables.FAILED_STATUS, HelperVariables.INVALID_REQUEST_MESSAGE, null);
                         };
                     });
-            services.AddSingleton<IProccessPaymentService, ProcessPaymentService>();
+            services.AddScoped<IProccessPaymentService, ProcessPaymentService>();
             services.AddSingleton<ICheapGatewayService, CheapGatewayService>();
             services.AddSingleton<IExpensiveGatewayService, ExpensivePaymentGateway>();
-            services.AddSingleton<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AndrewCSharpCodingTest", Version = "v1" });
