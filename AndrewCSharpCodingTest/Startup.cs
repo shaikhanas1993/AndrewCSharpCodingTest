@@ -1,6 +1,7 @@
 using AndrewCSharpCodingTest.Core;
 using AndrewCSharpCodingTest.GatewayClients;
 using AndrewCSharpCodingTest.Helpers;
+using AndrewCSharpCodingTest.Respositories;
 using AndrewCSharpCodingTest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -45,6 +46,7 @@ namespace AndrewCSharpCodingTest
                     });
             services.AddSingleton<IProccessPaymentService, ProcessPaymentService>();
             services.AddSingleton<ICheapGatewayService, CheapGatewayService>();
+            services.AddSingleton<IPaymentRepository, PaymentRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AndrewCSharpCodingTest", Version = "v1" });

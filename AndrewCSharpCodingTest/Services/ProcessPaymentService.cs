@@ -1,6 +1,7 @@
 ﻿using AndrewCSharpCodingTest.GatewayClients;
 using AndrewCSharpCodingTest.Helpers;
 using AndrewCSharpCodingTest.Models;
+using AndrewCSharpCodingTest.Respositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace AndrewCSharpCodingTest.Services
     public class ProcessPaymentService : IProccessPaymentService
     {
         private readonly ICheapGatewayService _cheapGatewayServie;
-        public ProcessPaymentService(ICheapGatewayService cheapGatewayService)
+        private readonly IPaymentRepository _paymentRepository;
+        public ProcessPaymentService(ICheapGatewayService cheapGatewayService, IPaymentRepository paymentRepository)
         {
             _cheapGatewayServie = cheapGatewayService;
+            _paymentRepository = paymentRepository;
         }
 
         public Task<FakeGatewayResponse> processPayment(Payment payment)
@@ -47,7 +50,7 @@ namespace AndrewCSharpCodingTest.Services
             bool isServerAvailable = await _cheapGatewayServie.isServerAvailable();
             if(!isServerAvailable)
             {
-
+                await _paymentRepository.AddPayment(payment, false);
                 return new FakeGatewayResponse
                 {
                     code = HelperVariables.SERVER_UNAVAILABLE,
@@ -55,8 +58,9 @@ namespace AndrewCSharpCodingTest.Services
                     message = HelperVariables.CLIENT_SERVER_UNAVAILABLE
                 };
             }
-
+           
             var response  = await _cheapGatewayServie.hitEternalApiGateywayService();
+            await _paymentRepository.AddPayment(payment, response.status);
             return response;
         }
     }
