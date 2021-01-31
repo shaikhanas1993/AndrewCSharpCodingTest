@@ -47,6 +47,7 @@ namespace AndrewCSharpCodingTest.Services
             bool isServerAvailable = await _cheapGatewayServie.isServerAvailable();
             if(!isServerAvailable)
             {
+
                 return new FakeGatewayResponse
                 {
                     code = HelperVariables.SERVER_UNAVAILABLE,
@@ -55,7 +56,8 @@ namespace AndrewCSharpCodingTest.Services
                 };
             }
 
-            return  await _cheapGatewayServie.hitEternalApiGateywayService();
+            var response  = await _cheapGatewayServie.hitEternalApiGateywayService();
+            return response;
         }
     }
 }
