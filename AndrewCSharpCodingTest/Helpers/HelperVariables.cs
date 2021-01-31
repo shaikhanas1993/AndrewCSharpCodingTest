@@ -13,6 +13,7 @@ namespace AndrewCSharpCodingTest.Helpers
         public static readonly int OK = 200;
         public static readonly int CREATED = 201;
         public static readonly int NO_CONTENT = 204;
+        public static readonly int SERVER_UNAVAILABLE = 503;
 
         public static readonly int INTERNAL_SERVER_ERROR = 500;
 
@@ -20,6 +21,8 @@ namespace AndrewCSharpCodingTest.Helpers
         public static readonly bool FAILED_STATUS = false;
         public static readonly bool SUCCESS_STATUS = true;
         public static readonly string SUCCESS_MESSAGE = "Request was successfull";
+        public static readonly string CLIENT_SERVER_ERROR_MESSAGE = "Internal Server Error From the client was found";
+        public static readonly string CLIENT_SERVER_UNAVAILABLE = "Could Not Process Request Since Client Server is Unavailable At the moment.";
         public static readonly string INVALID_REQUEST_MESSAGE = "Your payload is invalid.Please provide the correct payload.";
     }
 }

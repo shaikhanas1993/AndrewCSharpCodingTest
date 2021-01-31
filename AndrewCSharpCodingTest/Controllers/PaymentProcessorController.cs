@@ -1,5 +1,6 @@
 ﻿using AndrewCSharpCodingTest.Helpers;
 using AndrewCSharpCodingTest.Models;
+using AndrewCSharpCodingTest.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -15,16 +16,19 @@ namespace AndrewCSharpCodingTest.Controllers
     public class PaymentProcessorController : ControllerBase
     {
         private readonly ILogger<PaymentProcessorController> _logger;
+        private readonly IProccessPaymentService _processPaymentService;
 
-        public PaymentProcessorController(ILogger<PaymentProcessorController> logger) {
+        public PaymentProcessorController(ILogger<PaymentProcessorController> logger, IProccessPaymentService processPaymentService) {
             _logger = logger;
+            _processPaymentService = processPaymentService;
         }
 
         [HttpPost("ProcessPayment")]
         public async Task<IActionResult> ProcessPayment([FromBody] Payment payment)
         {
-                await Task.Run(() => Console.WriteLine("h"));
-                return ResponseHelper.Response(HelperVariables.OK, HelperVariables.SUCCESS_STATUS, HelperVariables.SUCCESS_MESSAGE, null);
+                var response = await _processPaymentService.processPayment(payment);
+                
+                return ResponseHelper.Response(response.code, response.status, response.message, null);
         }
     }
 }

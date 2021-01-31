@@ -25,6 +25,7 @@ namespace AndrewCSharpCodingTest.Models
         public DateTime ExpirationDate { get; set; }
 
         [Required]
+        [Range(double.Epsilon, double.MaxValue)]
         public Double Amount { get; set; }
 
         public string SecurityCode { get; set; }

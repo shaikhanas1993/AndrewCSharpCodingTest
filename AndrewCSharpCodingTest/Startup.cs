@@ -1,5 +1,7 @@
 using AndrewCSharpCodingTest.Core;
+using AndrewCSharpCodingTest.GatewayClients;
 using AndrewCSharpCodingTest.Helpers;
+using AndrewCSharpCodingTest.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -41,6 +43,8 @@ namespace AndrewCSharpCodingTest
                            return ResponseHelper.Response(HelperVariables.BAD_REQUEST, HelperVariables.FAILED_STATUS, HelperVariables.INVALID_REQUEST_MESSAGE, null);
                         };
                     });
+            services.AddSingleton<IProccessPaymentService, ProcessPaymentService>();
+            services.AddSingleton<ICheapGatewayService, CheapGatewayService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AndrewCSharpCodingTest", Version = "v1" });
